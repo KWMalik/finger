@@ -6,7 +6,7 @@ LDFLAGS=
 default: fprobe
 
 fprobe: 
-	$(CC) $(CFLAGS) -o fprobe src/fprobe.c
+	$(CC) $(CFLAGS) -o fprobe util/fprobe.c
 
 clean: 
 	rm -f fprobe 
