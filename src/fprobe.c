@@ -25,6 +25,7 @@
  */
 
 #include <stdio.h> 
+#include <stdlib.h> 
 #include <sys/types.h> 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -34,13 +35,41 @@
  * http://www.linuxhowtos.org/C_C++/socket.htm
  */
 int main(int argc, char *argv[]) { 
-    if(argc < 2) 
+    if(argc < 2) { 
         printf("Use: fprobe <query>\n"); 
+        exit(1); 
+    }
     
-    int sockfd, newsockfd, portno, clilen, n; 
+    int sockfd, newsockfd, clilen, n;  
+    int portno = 79; // finger runs on port 79
+    char *host = "localhost"; // this is a localhost test app
     char buffer[256]; 
     struct sockaddr_in serv_addr, cli_addr;
     
+    /* 
+     * The specs for finger specify that you need to 
+     * make a TCP socket connection to the RUIP 
+     * (finger protocol) server. 
+     */
+    sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP); 
+    if(sockfd < 0) { 
+        printf("Failed to open socket"); 
+        exit(1); 
+    }
+  
+    /* Zero out the serv_addr buffer struct */ 
+    bzero((char *)&serv_addr, sizeof(serv_addr)); 
+    /* Setup the socket buffer */ 
+    serv_addr.sin_family = AF_INET; //Should always be AF_INET
+    /* port converted to a network byte order. */ 
+    serv_addr.sin_port = htons(portno); 
+
+    /* 
+     * The argument should be the query from the command line, as
+     * the query would be if you were typing it in from a finger 
+     * command. 
+     */
+    //TODO: this..
 
     return 0; 
 }

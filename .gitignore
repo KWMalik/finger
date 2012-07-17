@@ -2,3 +2,4 @@ license.templates
 *.o
 *.so
 *.a
+fprobe
